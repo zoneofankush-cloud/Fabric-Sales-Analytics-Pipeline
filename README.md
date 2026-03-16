@@ -59,5 +59,10 @@ fabric-sales-pipeline-project
 </ol>
 
 <h2><b style="color: #0078D4;">📊 Final Executive Dashboard</b></h2>
-<p><i>(Insert your SS_Dashboard.png image here by dragging and dropping it into the GitHub editor!)</i></p>
+<p><i>(
+
+![SS_Dashboard](https://github.com/user-attachments/assets/f3d44fba-9fa9-481c-9a12-ccd0ec167342)
+
+  
+)</i></p>
 
