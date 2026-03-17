@@ -1,0 +1,285 @@
+{
+    "name": "Ankush-pipeline",
+    "objectId": "f3405e6a-e084-464c-9329-90b6fd463cf2",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy data1",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Wait1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "source": {
+                        "type": "LakehouseTableSource",
+                        "datasetSettings": {
+                            "annotations": [],
+                            "connectionSettings": {
+                                "name": "Ankush_Lakehouse",
+                                "properties": {
+                                    "annotations": [],
+                                    "type": "Lakehouse",
+                                    "typeProperties": {
+                                        "workspaceId": "697da7f2-16be-44f7-892e-83885a8fd579",
+                                        "artifactId": "6d97a040-615d-4fea-a1f5-57714c8afffb",
+                                        "rootFolder": "Tables"
+                                    },
+                                    "externalReferences": {
+                                        "connection": "0bc42b3b-8f02-4b94-a1e6-641f730baf48"
+                                    }
+                                }
+                            },
+                            "type": "LakehouseTable",
+                            "schema": [],
+                            "typeProperties": {
+                                "schema": "dbo",
+                                "table": {
+                                    "value": "@last(split(pipeline()?.TriggerEvent?.FolderPath, '/'))",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    "sink": {
+                        "type": "LakehouseTableSink",
+                        "tableActionOption": "Upsert",
+                        "upsertSettings": {
+                            "keys": [
+                                "OrderNumber"
+                            ]
+                        },
+                        "applyVOrder": false,
+                        "datasetSettings": {
+                            "annotations": [],
+                            "connectionSettings": {
+                                "name": "Ankush_Lakehouse",
+                                "properties": {
+                                    "annotations": [],
+                                    "type": "Lakehouse",
+                                    "typeProperties": {
+                                        "workspaceId": "697da7f2-16be-44f7-892e-83885a8fd579",
+                                        "artifactId": "6d97a040-615d-4fea-a1f5-57714c8afffb",
+                                        "rootFolder": "Tables"
+                                    },
+                                    "externalReferences": {
+                                        "connection": "0bc42b3b-8f02-4b94-a1e6-641f730baf48"
+                                    }
+                                }
+                            },
+                            "type": "LakehouseTable",
+                            "schema": [],
+                            "typeProperties": {
+                                "schema": "ankush_schema",
+                                "table": "master_sales"
+                            }
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "OrderDate",
+                                    "type": "DateTime",
+                                    "physicalType": "timestamp"
+                                },
+                                "sink": {
+                                    "name": "OrderDate",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "StockDate",
+                                    "type": "DateTime",
+                                    "physicalType": "timestamp"
+                                },
+                                "sink": {
+                                    "name": "StockDate",
+                                    "physicalType": "date"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "OrderNumber",
+                                    "type": "String",
+                                    "physicalType": "string"
+                                },
+                                "sink": {
+                                    "name": "OrderNumber",
+                                    "physicalType": "string"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ProductKey",
+                                    "type": "Int64",
+                                    "physicalType": "long"
+                                },
+                                "sink": {
+                                    "name": "ProductKey",
+                                    "physicalType": "integer"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "CustomerKey",
+                                    "type": "Int64",
+                                    "physicalType": "long"
+                                },
+                                "sink": {
+                                    "name": "CustomerKey",
+                                    "physicalType": "integer"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "TerritoryKey",
+                                    "type": "Int64",
+                                    "physicalType": "long"
+                                },
+                                "sink": {
+                                    "name": "TerritoryKey",
+                                    "physicalType": "integer"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "OrderLineItem",
+                                    "type": "Int64",
+                                    "physicalType": "long"
+                                },
+                                "sink": {
+                                    "name": "OrderLineItem",
+                                    "physicalType": "integer"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "OrderQuantity",
+                                    "type": "Int64",
+                                    "physicalType": "long"
+                                },
+                                "sink": {
+                                    "name": "OrderQuantity",
+                                    "physicalType": "integer"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Notebook1",
+                "type": "TridentNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Wait2",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "notebookId": "fb0d9b36-f7ca-481a-9de6-8e9ff63c317e",
+                    "workspaceId": "697da7f2-16be-44f7-892e-83885a8fd579"
+                }
+            },
+            {
+                "name": "Wait1",
+                "type": "Wait",
+                "dependsOn": [],
+                "typeProperties": {
+                    "waitTimeInSeconds": 120
+                }
+            },
+            {
+                "name": "Wait2",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "Copy data1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "waitTimeInSeconds": 60
+                }
+            },
+            {
+                "name": "Semantic model refresh1",
+                "type": "PBISemanticModelRefresh",
+                "dependsOn": [
+                    {
+                        "activity": "Wait3",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "method": "post",
+                    "waitOnCompletion": true,
+                    "commitMode": "Transactional",
+                    "operationType": "SemanticModelRefresh",
+                    "groupId": "697da7f2-16be-44f7-892e-83885a8fd579",
+                    "datasetId": "f1ca00fd-25a3-40d0-8daf-e3a90fd692a8"
+                },
+                "externalReferences": {
+                    "connection": "2ec4ad8f-67fc-43c8-9713-5baf49c4155f"
+                }
+            },
+            {
+                "name": "Wait3",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "Notebook1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "waitTimeInSeconds": 60
+                }
+            }
+        ],
+        "lastModifiedByObjectId": "8104fcac-4c48-4c0f-8c1b-abc5e10d6560",
+        "lastPublishTime": "2026-03-14T15:03:49Z"
+    }
+}
