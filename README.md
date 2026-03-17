@@ -65,4 +65,5 @@ fabric-sales-pipeline-project
 
   
 </i></p>
+<iframe title="Ankush-LHouse-Powerbi" width="1140" height="541.25" src="https://app.fabric.microsoft.com/reportEmbed?reportId=8f037f3b-4c6f-43b1-8914-c654077434d4&autoAuth=true&ctid=27282fdd-4c0b-4dfb-ba91-228cd83fdf71" frameborder="0" allowFullScreen="true"></iframe>
 
